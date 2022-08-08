@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03-data和el的另外一种写法</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root1">
+        <h2>{{name1}}</h2>
+    </div>
+    <div id="root2">
+        <h2>{{name2}}</h2>
+    </div>
+    <script type="text/javascript">
+        // 第一种写法：
+        new Vue({
+            el: "#root1",
+            // 对象式
+            data: {
+                name1: "data和el的第一种写法"
+            }
+        })
+
+        // 第二种写法：推荐使用第二种方式
+        const app = new Vue({
+            // 函数式，不能是箭头函数
+            // data: function() 可以简写为 data()
+            data: function(){
+                return {
+                    name2: "data和el的第二种写法"
+                }
+            }
+        })
+        // 容器挂载到实例上
+        app.$mount("#root2");
+    </script>
+
+</body>
+</html>

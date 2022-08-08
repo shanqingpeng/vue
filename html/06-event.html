@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>06-事件</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <style>
+        * {
+            margin-top: 20px;
+        }
+
+        .box1 {
+            padding: 5px;
+            height: 50px;
+            width: 550px;
+            background-color: skyblue;
+        }
+
+        .box2 {
+            padding: 5px;
+            width: 550px;
+            background-color: skyblue;
+        }
+
+        .box3 {
+            padding: 5px;
+            width: 540px;
+            background-color: yellowgreen;
+        }
+
+        .box4 {
+            padding: 5px;
+            width: 550px;
+            background-color: skyblue;
+        }
+
+        .list {
+            width: 200px;
+            height: 200px;
+            background-color: orange;
+            overflow: auto;
+        }
+
+        li {
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <h2>1、事件处理</h2>
+        <h3>(1) 通过 v-on:click 指令绑定点击事件</h3>
+        <button class="btn" v-on:click="hello1">按钮 (完整指令)</button>
+
+        <h3>(2) v-on:click 可以简写为 @click, 建议使用这种方式</h3>
+        <button class="btn" @click="hello2">按钮 (简写指令)</button>
+
+        <h3>(3) 事件响应函数可以传递参数, $event表示事件对象</h3>
+        <button class="btn" @click="hello3($event, 'shanqingpeng')">按钮 (带参数)</button>
+
+
+        <h2>2、事件修饰符</h2>
+        <h3>(1) prevent: 阻止默认事件 (常用)</h3>
+        <a href="https://cn.bing.com/" @click.prevent="tips1">点击提示信息 (prevent阻止默认事件)</a>
+
+        <h3>(2) stop: 阻止冒泡事件 (常用)</h3>
+        <div class="box1" @click="msg1">
+            box1
+            <button @click.stop="msg1">点击提示信息 (stop阻止冒泡事件)</button>
+        </div>
+
+        <h3>(3) once: 只触发一次事件 (常用)</h3>
+        <button @click.once="msg2">点击提示信息 (once只触发一次事件)</button>
+
+        <h3>(4) capture: 事件在捕获阶段就触发</h3>
+        <div class="box2" @click.capture="msg3('box2')">
+            box2
+            <div class="box3" @click="msg3('box3')">
+                box3
+            </div>
+        </div>
+
+        <!-- self：在一定程度上也有阻止冒泡的作用 -->
+        <h3>(5) self: 只有事件源(触发事件的元素)在当前元素上时才会触发事件</h3>
+        <div class="box4" @click.self="msg4($event)">
+            box4
+            <button @click="msg4($event)">点击提示信息 (self)</button>
+        </div>
+
+        <h3>(6) passive: 立即执行事件的默认行为, 无需等待事件响应函数执行完成 </h3>
+        <h4>- @wheel: 绑定鼠标滚轮滚动事件</h4>
+        <h4>- @scroll: 绑定滚动条滚动事件</h4>
+        <ul class="list" @scroll.passive="demo">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+
+        <h2>3、键盘事件</h2>
+
+        <h3>(1) 使用 @keyup.enter 绑定回车键</h3>
+        绑定enter键: <input type="text" placeholder="按下回车提示输入" @keyup.enter="showInfo($event)">
+        
+        <h3>(2) Vue中常见按键别名: </h3>
+        <h4>回车: enter</h4>
+        <h4>删除: delete (捕获 "删除" 和 "退格" 键)</h4>
+        <h4>退出: esc</h4>
+        <h4>空格: space</h4>
+        <h4>换行: tab (不能绑定 keyup 事件, 可以绑定 keydown 事件)</h4>
+        <h4>上: up</h4>
+        <h4>下: down</h4>
+        <h4>左: left</h4>
+        <h4>右: right</h4>
+
+        <h3>(3) 不推荐通过keyCode绑定键盘按键 (不同键盘的keyCode可能不一致) </h3>
+
+        <h3>(4) 系统修饰键: ctrl、alt、shift、win </h3>
+        <h4>- 绑定keyup事件时: 需要按下该键不松手, 然后再按下其他键, 随后是否其他键, 事件才会触发</h4>
+        <h4>- 绑定keydown事件时: 按下按键即可正常触发事件</h4>
+        <br>
+        <br>
+        <br>
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+        
+        // 自定义按键别名(不推荐)
+        Vue.config.keyCodes = {
+            huiche: 13
+        }
+        
+        const vm = new Vue({
+            el: "#root",
+            data: {
+                name: "shanqingpeng"
+            },
+            methods: {
+                /**
+                 * (1) 事件响应函数需要在mthods中进行配置
+                 * (2) 事件响应函数建议使用普通函数, 不要使用箭头函数, 因为箭头函数会改变this
+                 * (3) 事件响应函数放在data中也可以使用, 但是不建议这样使用, 因为事件响应函数不会改变, 
+                 *  只会被调用, 所以不需要进行数据代理
+                 */
+                hello1() {
+                    // 使用普通函数时, this指向Vue实例vm
+                    console.log(this);
+                    alert("你好 (使用 v-on:click 指令)");
+                },
+                hello2() {
+                    // 使用普通函数时, this指向Vue实例vm
+                    console.log(this);
+                    alert("你好 (使用 @click 指令)");
+                },
+                hello3(event, name) {
+                    // 使用普通函数时, this指向Vue实例vm
+                    console.log(this);
+                    console.log(event);
+                    console.log(name);
+                    alert("你好, " + name + " (传参数)");
+                },
+                tips1() {
+                    alert("你好, 事件修饰符 (prevent)");
+                },
+                msg1() {
+                    alert("你好, 事件修饰符 (stop)");
+                },
+                msg2() {
+                    alert("你好, 事件修饰符 (once)");
+                },
+                msg3(msg) {
+                    alert("你好, 事件修饰符 (capture) " + msg);
+                },
+                msg4(event) {
+                    console.log(event.target);
+                    alert("你好, 事件修饰符 (self) ");
+                },
+                demo() {
+                    for(let i = 0; i < 10000; i++) {
+                        console.log("你好, 事件修饰符 (passive)")
+                    }
+                    console.log("事件响应函数处理完成")
+                },
+                showInfo(event) {
+                    console.log(event.target.value);
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

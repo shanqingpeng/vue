@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02-vue模板语法</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <!-- 1、插值语法：使用{{}}，用于解析标签体内容 -->
+        <h2>hello , {{name}}</h2>
+
+        <!--
+             2、指令语法(v-bind)：用于解析标签属性，可以简写为:
+         -->
+        <a v-bind:href="url">去百度1</a><br/>
+        <a :href="url">去百度2</a><br/>
+
+        <!-- 
+            3、数据绑定：
+            (1) 单向数据绑定：v-bind，数据只能从data流向页面
+            (2) 双向数据绑定：v-model，
+            - 数据不仅能从data流向页面，还能从页面流向data
+            - 一般应用在表单类元素上(如：input、select，因为这些元素有value属性)
+            - v-model:value可以简写为v-model，因为v-model默认收集的就是value属性值
+         -->
+         单向数据绑定：<input type="text" v-bind:value="value" /> <br/>
+         双向数据绑定：<input type="text" v-model:value="value" /> <br/>
+         双向数据绑定简写：<input type="text" v-model="value" /> <br/>
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+        new Vue({
+            el: "#root",
+            data: {
+                name: "jack",
+                url: "https://www.baidu.com/",
+                value: "123"
+            }
+        });
+    </script>
+</body>
+</html>

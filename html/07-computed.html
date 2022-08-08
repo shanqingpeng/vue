@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>07-计算属性</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+    <h2>07-计算属性</h2>
+
+    <h3>1、姓名案例</h3>
+    <div id="root">
+        firstName: <input type="text" v-model="firstName"><br><br>
+        lastName: <input type="text" v-model="lastName"><br><br>
+
+        <h3>(1) 使用插值语法 {{}} 实现: </h3>
+        fullName: <span>{{firstName}} - {{lastName}}</span>
+
+        <h3>(2) 使用 methods 实现</h3>
+        <h4>- 差值语法 {{}} 中也可以调用方法</h4>
+        <h4>- methods 没有使用缓存, 每次使用差值语法, 都会调用 fullName1() 方法</h4>
+        <h4>- 每次 firstName 或 lastName 的值发生变化, 就会调用 fullName1() 方法</h4>
+        fullName: <span>{{fullName1()}}</span>
+
+        <h3>(3) 使用 computed 实现</h3>
+        <h4>- computed 中的计算属性 (如这里的fullName2) 会被存储在 vm 中</h4>
+        <h4>- 初次使用 差值语法 {{}} 读取时, fullName2 的 get() 方法会被调用</h4>
+        <h4>- computed 使用了缓存, 比 methods 效率更高, 多次使用差值语法 {{}} 读取时, 只会调用一次 fullName2 的 get() 方法</h4>
+        <h4>- fullName2 中所依赖的数据发生改变时 (这里是指 firstName 和 lastName), fullName2 的 get() 方法会被调用</h4>
+        <h4>- fullName2 中没有 set() 方法时, fullName2 的值不能被修改</h4>
+        fullName: <span>{{fullName2}}</span>
+
+        <h3>(4) 使用 computed(简写) 实现</h3>
+        <h4>- 当 fullName3 中只有 get() 方法时, 才可以简写</h4>
+        fullName: <span>{{fullName3}}</span>
+
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+        const vm = new Vue({
+            el: "#root",
+            data: {
+                firstName: "张",
+                lastName: "三"
+            },
+            methods: {
+                fullName1() {
+                    console.log("fullName1 方法被调用了")
+                    return this.firstName + "-" + this.lastName;
+                }
+            },
+            computed: {
+                fullName2: {
+                    get() {
+                        console.log("fullName2 的 get() 方法被调用了");
+                        return this.firstName + "-" + this.lastName;
+                    },
+                    set(value) {
+                        console.log("fullName2 的 set() 方法被调用了");
+                    }
+                },
+                fullName3() {
+                    console.log("fullName3 的 get() 方法被调用了");
+                    return this.firstName + "-" + this.lastName;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

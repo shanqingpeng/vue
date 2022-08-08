@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>08-监视属性</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <style>
+        span {
+            background-color: skyblue;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>08-监视属性</h2>
+    <hr>
+    <div id="root">
+        <h4>1、直接写在事件属性值中 (仅适用于简单语句)</h4>
+        <h3>今天天气<span>{{weather1()}}</span></h3>
+        <button @click="isHot1 = !isHot1;">切换天气</button>
+        <hr>
+
+        <h4>2、使用 mthods 实现</h4>
+        <h3>今天天气<span>{{weather2()}}</span></h3>
+        <button @click="change('hot2')">切换天气</button>
+        <hr>
+
+        <h4>3、使用 computed 实现</h4>
+        <h3>今天天气<span>{{weather3}}</span></h3>
+        <button @click="change('hot3')">切换天气</button>
+        <hr>
+
+        <h4>4、使用 watch 实现</h4>
+        <h4>- watch 既可以监视 data 中的属性, 也可以监视 computed 中的属性</h4>
+        <h4>- 被监视的属性必须存在才能进行监视, 否则将不会有监视效果 (不报错)</h4>
+        <h4>- 被监视的属性每次发生变化时, 都会调用 handler() 方法</h4>
+        <h4>- 使用 watch 监视属性的另外一种写法: 通过 vm.$watch 进行配置</h4>
+        
+        <h3>今天天气<span>{{hotName1}}</span></h3>
+        <button @click="change('hot4')">切换天气</button>
+        <hr>
+
+        <h4>5、使用 watch 监视属性 (第二种写法)</h4>
+        <h3>今天天气<span>{{hotName2}}</span></h3>
+        <button @click="change('hot5')">切换天气</button>
+        <hr>
+
+        <h4>6、使用 watch 进行深度监视</h4>
+        <h4>- 使用 deep: true 开启深度监视, 可以监视data中的多级属性变动</h4>
+        <h4>- 当被监视的属性中只有handler时, 可以简写</h4>
+        <h3>num中a的值是: {{nums.a}}</h3>
+        <button @click="changeNum('a')">使a + 1</button>
+        <button @click="changeNum('b')">使b + 1</button>
+        <button @click="changeNum('c')">使c + 1</button>
+        <hr>
+
+        <h4>7、computed 与 watch 进行比较</h4>
+        <h4>- 使用 computed 能完成的操作, 使用 watch 都能完成, 反之, 则不一定, 例如: 使用 watch 可以进行异步操作</h4>
+        <h4>- 所有被 vue 管理的函数, 最好写成普通函数, 这样函数中的 this 指向 vm 或组件实例</h4>
+        <h4>- 所有不被 vue 管理的函数(如定时器回调函数、ajax回调函数等), 最好写成箭头函数, 这样函数中的 this 指向 vm 或组件实例</h4>
+
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+        const vm = new Vue({
+            el: "#root",
+            data: {
+                isHot1: true,
+                isHot2: true,
+                isHot3: true,
+                isHot4: true,
+                isHot5: true,
+                hotName1: "",
+                hotName2: "",
+                nums: {
+                    a: 1,
+                    b: 2,
+                    c: 3
+                }
+            },
+            methods: {
+                weather1() {
+                    return this.isHot1 ? "炎热" : "凉爽";
+                },
+                weather2() {
+                    return this.isHot2 ? "炎热" : "凉爽";
+                },
+                change(hotName) {
+                    if (hotName === "hot2") {
+                        this.isHot2 = !this.isHot2;
+                    } else if (hotName === "hot3") {
+                        this.isHot3 = !this.isHot3;
+                    } else if (hotName === "hot4") {
+                        this.isHot4 = !this.isHot4;
+                    } else if (hotName === "hot5") {
+                        this.isHot5 = !this.isHot5;
+                    }
+                },
+                changeNum(e) {
+                    if (e === "a") {
+                        this.nums.a++;
+                    } else if (e === "b") {
+                        this.nums.b++;
+                    } else if (e === "c") {
+                        this.nums.c++;
+                    }
+                }
+            },
+            computed: {
+                weather3() {
+                    return this.isHot3 ? "炎热" : "凉爽";
+                }
+            },
+            watch: {
+                // 监视 data 中的属性
+                isHot4: {
+                    immediate: true,  // 初始化时立即调用一次 handler
+                    handler(newValue, oldValue) {
+                        //newValue: (isHot4) 修改之后的值
+                        //oldValue: (isHot4) 修改之前的值
+                        this.hotName1 = newValue ? "炎热" : "凉爽";
+                    }
+                },
+
+                // 监视 computed 中的属性
+                weather3: {
+                    immediate: true,  // 初始化时立即调用一次 handler
+                    handler(newValue, oldValue) {
+                        //newValue: (weather3) 修改之后的值
+                        //oldValue: (weather3) 修改之前的值
+                        this.hotName1 = newValue;
+                    }
+                },
+
+                // 监视num中的属性a
+                "nums.a": {
+                    immediate: true,
+                    handler(newValue, oldValue) {
+                        console.log("nums中的属性a变动了");
+                    }
+                },
+
+                // 监视data中的属性nums
+                nums: {
+                    deep: true,         // 开启深度监视 (可以监视data中多级属性的变动)
+                    immediate: true,
+                    handler(newValue, oldValue) {
+                        console.log("nums中有属性变动了");
+                    }
+                },
+
+                // watch简写: 监视num中的属性b
+                "nums.b"() {
+                    console.log("nums中的属性b变动了");
+                }
+            }
+        });
+
+        // 使用 watch 监视属性的第二种写法
+        vm.$watch("isHot5", {
+            immediate: true, // 初始化时立即调用一次 handler
+            handler(newValue, oldValue) {
+                //newValue: (isHot5) 修改之后的值
+                //oldValue: (isHot5) 修改之前的值
+                this.hotName2 = newValue ? "炎热" : "凉爽";
+            }
+        });
+
+        // watch 简写: 监视nums中的属性c, 注意此处不可用箭头函数, 因为会改变this
+        vm.$watch("nums.c", function (newValue, oldValue) {
+            console.log("num中的属性c变动了");
+        });
+    </script>
+</body>
+
+</html>
