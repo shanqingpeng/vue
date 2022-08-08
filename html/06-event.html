@@ -105,7 +105,7 @@
 
         <h3>(1) 使用 @keyup.enter 绑定回车键</h3>
         绑定enter键: <input type="text" placeholder="按下回车提示输入" @keyup.enter="showInfo($event)">
-        
+
         <h3>(2) Vue中常见按键别名: </h3>
         <h4>回车: enter</h4>
         <h4>删除: delete (捕获 "删除" 和 "退格" 键)</h4>
@@ -128,12 +128,12 @@
     </div>
     <script type="text/javascript">
         Vue.config.productionTip = false;
-        
+
         // 自定义按键别名(不推荐)
         Vue.config.keyCodes = {
             huiche: 13
         }
-        
+
         const vm = new Vue({
             el: "#root",
             data: {
@@ -180,7 +180,7 @@
                     alert("你好, 事件修饰符 (self) ");
                 },
                 demo() {
-                    for(let i = 0; i < 10000; i++) {
+                    for (let i = 0; i < 10000; i++) {
                         console.log("你好, 事件修饰符 (passive)")
                     }
                     console.log("事件响应函数处理完成")

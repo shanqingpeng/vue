@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <title>02-vue模板语法</title>
     <script type="text/javascript" src="../js/vue.js"></script>
 </head>
+
 <body>
     <div id="root">
         <!-- 1、插值语法：使用{{}}，用于解析标签体内容 -->
@@ -15,8 +17,8 @@
         <!--
              2、指令语法(v-bind)：用于解析标签属性，可以简写为:
          -->
-        <a v-bind:href="url">去百度1</a><br/>
-        <a :href="url">去百度2</a><br/>
+        <a v-bind:href="url">去百度1</a><br />
+        <a :href="url">去百度2</a><br />
 
         <!-- 
             3、数据绑定：
@@ -26,9 +28,9 @@
             - 一般应用在表单类元素上(如：input、select，因为这些元素有value属性)
             - v-model:value可以简写为v-model，因为v-model默认收集的就是value属性值
          -->
-         单向数据绑定：<input type="text" v-bind:value="value" /> <br/>
-         双向数据绑定：<input type="text" v-model:value="value" /> <br/>
-         双向数据绑定简写：<input type="text" v-model="value" /> <br/>
+        单向数据绑定：<input type="text" v-bind:value="value" /> <br />
+        双向数据绑定：<input type="text" v-model:value="value" /> <br />
+        双向数据绑定简写：<input type="text" v-model="value" /> <br />
     </div>
     <script type="text/javascript">
         Vue.config.productionTip = false;
@@ -42,4 +44,5 @@
         });
     </script>
 </body>
+
 </html>

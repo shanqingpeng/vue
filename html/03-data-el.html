@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <title>03-data和el的另外一种写法</title>
     <script type="text/javascript" src="../js/vue.js"></script>
 </head>
+
 <body>
     <div id="root1">
         <h2>{{name1}}</h2>
@@ -28,7 +30,7 @@
         const app = new Vue({
             // 函数式，不能是箭头函数
             // data: function() 可以简写为 data()
-            data: function(){
+            data: function () {
                 return {
                     name2: "data和el的第二种写法"
                 }
@@ -39,4 +41,5 @@
     </script>
 
 </body>
+
 </html>
