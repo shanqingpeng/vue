@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11-列表渲染</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <p>1、使用 v-for 遍历数组 (使用 in) (常用)</p>
+        <ul>
+            <li>ID ------- 姓名 ------- 年龄</li>
+            <li v-for="(person, index) in personList" :key="index">
+                {{person.id}} ------- {{person.name}} ------- {{person.age}}
+            </li>
+        </ul>
+
+        <p>2、使用 v-for 遍历数组 (使用 of)</p>
+        <ul>
+            <li>ID ------- 姓名 ------- 年龄</li>
+            <li v-for="(person, index) of personList" :key="index">
+                {{person.id}} ------- {{person.name}} ------- {{person.age}}
+            </li>
+        </ul>
+
+        <p>3、使用 v-for 遍历对象 (可以使用 in 或 of) (不常用)</p>
+        <ul>
+            <li v-for="(value, key) in carInfo" :key="key">
+                {{key}} ------- {{value}}
+            </li>
+        </ul>
+
+        <p>4、使用 v-for 遍历字符串 (可以使用 in 或 of) (不常用)</p>
+        <ul>
+            <li v-for="(value, index) in str" :key="index">
+                {{index}} ------- {{value}}
+            </li>
+        </ul>
+
+        <p>5、使用 v-for 指定遍历次数 (可以使用 in 或 of) (不常用)</p>
+        <ul>
+            <li v-for="(value, index) in 10" :key="index">
+                {{index}} ------- {{value}}
+            </li>
+        </ul>
+
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                personList: [
+                    {
+                        id: 1,
+                        name: 'sqp1',
+                        age: 18
+                    },
+                    {
+                        id: 2,
+                        name: 'sqp2',
+                        age: 19
+                    },
+                    {
+                        id: 3,
+                        name: 'sqp3',
+                        age: 20
+                    }
+                ],
+                carInfo: {
+                    brand: 'Audi',
+                    serial: 'A4',
+                    price: '30W'
+                },
+                str: 'hello-world'
+            }
+        });
+    </script>
+</body>
+
+</html>

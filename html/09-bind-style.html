@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>09-绑定样式</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <style>
+        .basic {
+            height: 200px;
+            width: 400px;
+            border: 1px solid black;
+        }
+
+        .happy {
+            border: 2px solid;
+            background-color: rgb(255, 110, 236);
+        }
+
+        .sad {
+            border: 2px solid;
+            background-color: grey;
+        }
+
+        .normal {
+            border: 2px solid;
+            background-color: rgb(122, 165, 185);
+        }
+
+        .font-larger {
+            font-size: larger;
+        }
+
+        .div-background {
+            background-color: rgb(19, 100, 124);
+        }
+
+        .font-bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <p>1、使用 <code>:class</code> 绑定单个样式名称</p>
+        <div class="basic" :class="mood" @click="changeMood1">
+            text-bind-style
+        </div>
+
+        <p>2、使用 <code>:class</code> 绑定多个样式名称 (适用于: 样式数量和名称都不确定)</p>
+        <div class="basic" :class="moodArray">
+            text-bind-style
+        </div>
+
+        <p>3、使用 <code>:class</code> 绑定多个样式名称 (适用于: 样式数量和名称确定, 但不确定是否启用样式)</p>
+        <div class="basic" :class="moodObj">
+            text-bind-style
+        </div>
+
+        <p>4、使用 <code>:style</code> 绑定内联样式 (不常用)</p>
+        <div class="basic" :style="innerClass">
+            text-bind-style
+        </div>
+        <br/>
+
+    </div>
+
+    <script type="text/javascript">
+        // 阻止生成提示
+        Vue.config.productionTip = false;
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                // 绑定单个样式
+                mood: 'happy',
+                // 绑定样式数组: 可以同时绑定多个样式
+                moodArray: ['font-larger', 'div-background', 'font-bold'],
+                // 绑定样式对象: true表示启用样式, false表示不启用样式
+                moodObj: {
+                    'font-larger': true,
+                    'div-background': false,
+                    'font-bold': true
+                },
+                innerClass: {
+                    backgroundColor: 'green',
+                    fontSize: '30px'
+                }
+            },
+            methods: {
+                // 随机切换样式
+                changeMood1() {
+                    var moodArray = ['happy', 'sad', 'normal'];
+                    var index = Math.floor(Math.random() * 3);
+                    this.mood = moodArray[index];
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

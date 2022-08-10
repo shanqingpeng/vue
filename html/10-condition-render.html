@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10-条件渲染</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+
+        <h2>当前值是: {{index}}</h2>
+        <button @click="add">点这里+1</button>
+
+        <p>1、使用 v-show 进行条件渲染 (适用于: 切换频率较高的场景, 只隐藏元素, DOM元素还是存在)</p>
+        <h2 v-show="show">v-show hello {{name}}</h2>
+
+        <p>2、使用 v-if 进行条件渲染 (适用于: 切换频率较低的场景, 不满足条件时, DOM元素直接被移除)</p>
+        <h2 v-if="display1">v-if hello {{name}}</h2>
+
+        <p>3、使用 v-if-else-if-else 进行条件渲染 </p>
+        <h2 v-if="display2">v-if hello {{name}}</h2>
+        <h2 v-else-if="display3">v-else-if hello {{name}}</h2>
+        <h2 v-else>v-else hello {{name}}</h2>
+
+        <p>3、v-if 与 template配合使用 (template不影响DOM元素结构)</p>
+        <template v-if="index > 1">
+            <h2>Java</h2>
+            <h2>PHP</h2>
+            <h2>C++</h2>
+        </template>
+
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+        new Vue({
+            el: '#root',
+            data: { 
+                index: 0,
+                show: true,
+                display1: true,
+                display2: true,
+                display3: true,
+                name: '条件渲染'
+            },
+            methods: {
+                add() {
+                    this.index++;
+                    if (this.index > 0) {
+                        this.show = this.index % 2 == 0;
+                        this.display1 = this.index % 2 == 0;
+                    }
+                    this.display2 = this.index == 1;
+                    this.display3 = this.index == 2;
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>
