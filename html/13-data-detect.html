@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>13-数据监测</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <p>1、vue数据更新的问题</p>
+        <button @click="updateSex()">更新sqp1性别</button><br />
+        <ul>
+            <p>人员信息: </p>
+            <li>ID --- 姓名 --- 年龄 --- 性别</li>
+            <li v-for="(person, index) in personList" :key="person.id">
+                {{person.id}} --- {{person.name}} --- {{person.age}} --- {{person.sex}}
+            </li>
+        </ul>
+
+        <p>2、vue检测数据变化</p>
+        <button @click="updateDepartment()">更新部门地址</button>
+        <button @click="updateEmployeeList()">更新员工姓名</button>
+        <h3>部门信息: </h3>
+        <p>部门编号: {{departmentInfo.id}}</p>
+        <p>部门名称: {{departmentInfo.name}}</p>
+        <p>部门地址: {{departmentInfo.address}}</p>
+        <p>部门经理: {{departmentInfo.manager}}</p>
+        <p>员工姓名</p>
+        <u>
+            <li v-for="(empName, index) in departmentInfo.employeeList" :key="index">
+                {{empName}}
+            </li>
+        </u>
+
+        <p>3、Vue.set()方法的使用</p>
+        <button @click="addEmp">添加员工信息</button>
+        <h3>员工信息: </h3>
+        <p>工号: {{employeeInfo.id}}</p>
+        <p>姓名: {{employeeInfo.name}}</p>
+        <p>性别: {{employeeInfo.age}}</p>
+        <p>部门: {{employeeInfo.departmentName}}</p>
+        <p v-if="employeeInfo.salary">薪资: {{employeeInfo.salary}}</p>
+
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                personList: [
+                    {
+                        id: '1001',
+                        name: 'sqp1',
+                        age: 20,
+                        sex: '男'
+                    },
+                    {
+                        id: '1002',
+                        name: 'sqp2',
+                        age: 23,
+                        sex: '男'
+                    },
+                    {
+                        id: '1003',
+                        name: 'sqp3',
+                        age: 19,
+                        sex: '女'
+                    },
+                    {
+                        id: '1004',
+                        name: 'sqp4',
+                        age: 30,
+                        sex: '男'
+                    },
+                    {
+                        id: '1005',
+                        name: 'sqp5',
+                        age: 28,
+                        sex: '女'
+                    }
+                ],
+                departmentInfo: {
+                    id: '001',
+                    name: '研发部',
+                    address: 'beijing',
+                    manager: 'zhang',
+                    employeeList: ['张三', '李四', '王五']
+                },
+                employeeInfo: {
+                    id: '1001',
+                    name: 'sqp',
+                    age: '20',
+                    departmentName: '研发部'
+                }
+            },
+            methods: {
+                updateSex() {
+                    // 1、通过修改数组中对象的属性更新数据时, 有效
+                    // this.personList[0].sex = '女';
+
+                    // 2、通过直接修改数组中整个对象来更新数据, 无效(不会触发页面数据更新)
+                    this.personList[0] = {
+                        id: '1001',
+                        name: 'sqp1',
+                        age: 20,
+                        sex: '女'
+                    };
+                },
+                updateDepartment() {
+                    this.departmentInfo.address = 'shanghai';
+                },
+                updateEmployeeList() {
+                    // 3、直接通过下标修改数组元素, vue不能检测到数据的变化, 不会触发页面数据更新
+                    // this.departmentInfo.employeeList[0] = '赵六';
+
+                    // 4、可以使用以下7种函数修改数据元素, vue会检测到数据的变化, 从而导致页面数据更新, 因为vue包装这几个方法
+                    // push()、pop()、shift()、unshift()、splice()、sort()、reverse()
+                    this.departmentInfo.employeeList.splice(0, 1, '赵六');
+                },
+                addEmp() {
+                    // 5、直接在vm数据域中添加数据, 不会导致页面数据刷新
+                    // this.employeeInfo.salary = '2W';
+
+                    // 6、通过Vue.set()可以向vm数据域中添加数据, 并且自动刷新页面数据
+                    // Vue.set(this.employeeInfo, 'salary', '2W');
+
+                    // vm.$set()也可以实现
+                    this.$set(this.employeeInfo, 'salary', '3W');
+
+                    // 7、但是这两个方法不能直接在vm或者vm的根数据域中添加数据, 如: 
+                    // this.$set(this, 'salary', '3W');
+                    // Vue.set(this, 'salary', '2W');
+
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
